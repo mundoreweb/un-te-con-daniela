@@ -1,9 +1,9 @@
 import { motion } from "motion/react";
-import { ShoppingBag, ChevronRight, ArrowLeft, MapPin, Phone, MessageCircle, Plus } from "lucide-react";
+import { ShoppingBag, ChevronRight, ArrowLeft, MapPin, Phone, MessageCircle, Plus, ChevronDown } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient"; // Asegúrate de ajustar la ruta de importación
+import { supabase } from "../lib/supabaseClient";
 
 interface Product {
   id?: number;
@@ -14,6 +14,8 @@ interface Product {
   price: string;
   image: string;
   color: string;
+  tones?: string;
+  selectedTone?: string;
 }
 
 interface Ally {
@@ -32,7 +34,6 @@ export function ProductsPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // Función para traer los datos en paralelo desde Supabase
     async function fetchData() {
       try {
         setLoading(true);
@@ -86,7 +87,7 @@ export function ProductsPage() {
         </div>
 
         {/* Sección de Productos Dinámicos */}
-        <div className="grid lg:grid-cols-2 gap-x-12 gap-y-24 mb-32">
+        <div className="grid lg:grid-cols-1 gap-x-12 gap-y-24 mb-32">
           {products.map((product, i) => (
             <ProductDetailCard key={product.id || i} product={product} index={i} />
           ))}
@@ -116,14 +117,30 @@ export function ProductsPage() {
   );
 }
 
-// (Los componentes ProductDetailCard y AllyCard quedan exactamente iguales a como los tenías)
 interface ProductDetailCardProps {
+  key?: any;
   product: Product;
   index: number;
 }
 
 function ProductDetailCard({ product, index }: ProductDetailCardProps) {
   const { addToCart } = useCart();
+
+  // Parse tones if they exist. e.g. "Almendra, Maní, Cacao"
+  const toneOptions = product.tones
+    ? product.tones.split(",").map((t) => t.trim()).filter(Boolean)
+    : [];
+
+  const [selectedTone, setSelectedTone] = useState<string>(
+    toneOptions.length > 0 ? toneOptions[0] : ""
+  );
+
+  // Keep first option updated if product details change dynamically
+  useEffect(() => {
+    if (toneOptions.length > 0) {
+      setSelectedTone(toneOptions[0]);
+    }
+  }, [product.tones]);
 
   return (
     <motion.div
@@ -132,7 +149,7 @@ function ProductDetailCard({ product, index }: ProductDetailCardProps) {
       viewport={{ once: true }}
       className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center"
     >
-      <div className={`w-full md:w-2/5 aspect-[4/5] rounded-[3rem] overflow-hidden ${product.color} shadow-[0_20px_50px_-15px_rgba(151,120,209,0.3)] relative group border border-white/40`}>
+      <div className={`w-full md:w-2/5 aspect-[4/5] rounded-[3rem] overflow-hidden ${product.color || "bg-brand-primary/10"} shadow-[0_20px_50px_-15px_rgba(151,120,209,0.3)] relative group border border-white/40`}>
         <img 
           src={product.image} 
           alt={product.title} 
@@ -172,11 +189,34 @@ function ProductDetailCard({ product, index }: ProductDetailCardProps) {
             </p>
           </div>
 
+          {/* Menú Desplegable de Tonos si aplica */}
+          {toneOptions.length > 0 && (
+            <div className="pt-2">
+              <h4 className="text-[10px] uppercase font-black text-brand-forest/60 tracking-widest mb-2 block italic">Selecciona tu tono</h4>
+              <div className="relative inline-block w-full max-w-xs">
+                <select
+                  value={selectedTone}
+                  onChange={(e) => setSelectedTone(e.target.value)}
+                  className="w-full px-5 py-3 pr-10 bg-white border border-brand-primary/20 rounded-2xl text-xs font-bold text-brand-secondary uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-brand-primary/40 appearance-none cursor-pointer shadow-sm transition-all hover:bg-brand-primary/[0.02]"
+                >
+                  {toneOptions.map(option => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute top-1/2 right-4 -translate-y-1/2 pointer-events-none text-brand-primary">
+                  <ChevronDown size={16} />
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="pt-4 mt-auto">
              <motion.button 
                whileHover={{ scale: 1.05 }}
                whileTap={{ scale: 0.95 }}
-               onClick={() => addToCart(product)}
+               onClick={() => addToCart({ ...product, selectedTone: toneOptions.length > 0 ? selectedTone : undefined })}
                className="w-full md:w-auto px-8 py-4 bg-brand-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all hover:bg-brand-secondary flex items-center justify-center gap-3 group"
              >
                Añadir al carrito
@@ -189,7 +229,13 @@ function ProductDetailCard({ product, index }: ProductDetailCardProps) {
   );
 }
 
-function AllyCard({ ally, index }: { ally: Ally; index: number }) {
+interface AllyCardProps {
+  key?: any;
+  ally: Ally;
+  index: number;
+}
+
+function AllyCard({ ally, index }: AllyCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}

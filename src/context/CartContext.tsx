@@ -9,6 +9,8 @@ export interface Product {
     image: string;
     color: string;
     category?: string;
+    tones?: string;
+    selectedTone?: string;
 }
 
 export interface CartItem extends Product {
@@ -18,8 +20,8 @@ export interface CartItem extends Product {
 interface CartContextType {
     cartItems: CartItem[];
     addToCart: (product: Product) => void;
-    removeFromCart: (productTitle: string) => void;
-    updateQuantity: (productTitle: string, quantity: number) => void;
+    removeFromCart: (productTitle: string, selectedTone?: string) => void;
+    updateQuantity: (productTitle: string, selectedTone: string | undefined, quantity: number) => void;
     clearCart: () => void;
     subtotal: number;
     total: number;
@@ -51,10 +53,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     const addToCart = (product: Product) => {
         setCartItems(prev => {
-            const existingItem = prev.find(item => item.title === product.title);
+            const existingItem = prev.find(item => 
+                item.title === product.title && item.selectedTone === product.selectedTone
+            );
             if (existingItem) {
                 return prev.map(item =>
-                    item.title === product.title
+                    item.title === product.title && item.selectedTone === product.selectedTone
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
@@ -64,17 +68,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         setIsCartOpen(true);
     };
 
-    const removeFromCart = (productTitle: string) => {
-        setCartItems(prev => prev.filter(item => item.title !== productTitle));
+    const removeFromCart = (productTitle: string, selectedTone?: string) => {
+        setCartItems(prev => prev.filter(item => !(item.title === productTitle && item.selectedTone === selectedTone)));
     };
 
-    const updateQuantity = (productTitle: string, quantity: number) => {
+    const updateQuantity = (productTitle: string, selectedTone: string | undefined, quantity: number) => {
         if (quantity <= 0) {
-            removeFromCart(productTitle);
+            removeFromCart(productTitle, selectedTone);
             return;
         }
         setCartItems(prev => prev.map(item =>
-            item.title === productTitle ? { ...item, quantity } : item
+            item.title === productTitle && item.selectedTone === selectedTone ? { ...item, quantity } : item
         ));
     };
 

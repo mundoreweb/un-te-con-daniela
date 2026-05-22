@@ -70,8 +70,10 @@ export function CartDrawer() {
                     </div>
                   </div>
                 ) : (
-                  cartItems.map((item) => (
-                    <div key={item.title} className="flex gap-4 group">
+                  cartItems.map((item) => {
+                    const itemKey = item.title + (item.selectedTone ? `-${item.selectedTone}` : '');
+                    return (
+                      <div key={itemKey} className="flex gap-4 group">
                       <div className={`w-20 h-24 rounded-2xl overflow-hidden ${item.color || 'bg-brand-wheat'} flex-shrink-0 border border-brand-primary/5`}>
                         <img 
                           src={item.image} 
@@ -82,26 +84,31 @@ export function CartDrawer() {
                       <div className="flex-1 flex flex-col justify-between py-1">
                         <div>
                           <h3 className="text-sm font-black uppercase tracking-tight text-brand-secondary">{item.title}</h3>
-                          <p className="text-[10px] text-brand-primary font-bold uppercase tracking-widest">{item.price}</p>
+                          {item.selectedTone && (
+                            <p className="text-[10px] text-brand-secondary/60 font-bold uppercase tracking-widest mt-0.5">
+                              Tono: {item.selectedTone}
+                            </p>
+                          )}
+                          <p className="text-[10px] text-brand-primary font-bold uppercase tracking-widest mt-0.5">{item.price}</p>
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 bg-brand-primary/5 rounded-lg px-2 py-1">
                             <button 
-                              onClick={() => updateQuantity(item.title, item.quantity - 1)}
+                              onClick={() => updateQuantity(item.title, item.selectedTone, item.quantity - 1)}
                               className="text-brand-primary hover:text-brand-secondary transition-colors"
                             >
                               <Minus size={14} />
                             </button>
                             <span className="text-xs font-black text-brand-secondary w-4 text-center">{item.quantity}</span>
                             <button 
-                              onClick={() => updateQuantity(item.title, item.quantity + 1)}
+                              onClick={() => updateQuantity(item.title, item.selectedTone, item.quantity + 1)}
                               className="text-brand-primary hover:text-brand-secondary transition-colors"
                             >
                               <Plus size={14} />
                             </button>
                           </div>
                           <button 
-                            onClick={() => removeFromCart(item.title)}
+                            onClick={() => removeFromCart(item.title, item.selectedTone)}
                             className="p-2 text-red-500/40 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                           >
                             <Trash2 size={16} />
@@ -109,7 +116,8 @@ export function CartDrawer() {
                         </div>
                       </div>
                     </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
 
@@ -172,59 +180,34 @@ export function CartDrawer() {
 
 function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: () => void, onConfirm: () => void }) {
   const { cartItems, total, isSoapOfferApplied } = useCart();
-  // Estado para guardar el teléfono dinámico. Por defecto el de Maria Fernanda en formato internacional sin símbolos 
-  const [whatsappPhone, setWhatsappPhone] = useState<string>("584247326655"); 
-
-  // Efecto para buscar el teléfono en Supabase cuando se abra el modal
-  useEffect(() => {
-    async function fetchWhatsappConfig() {
-      try {
-        const { data, error } = await supabase
-          .from('site_settings')
-          .select('value')
-          .eq('key', 'whatsapp_phone')
-          .single();
-
-        if (data && data.value) {
-          // Limpiamos cualquier espacio, guion o signo '+' que introduzca el usuario en el panel
-          const cleanedPhone = data.value.replace(/\D/g, '');
-          setWhatsappPhone(cleanedPhone);
-        }
-      } catch (err) {
-        console.error("Error obteniendo configuración de WhatsApp desde Supabase:", err);
-      }
-    }
-
-    if (isOpen) {
-      fetchWhatsappConfig();
-    }
-  }, [isOpen]);
   
   if (!isOpen) return null;
 
   const handleWhatsAppConfirm = () => {
-  let message = `¡Hola Daniela! 👋 Quiero realizar este pedido en Un Té con Daniela:\n`;
-  message += `--------------------------\n`;
-  
-  cartItems.forEach(item => {
-    const isSoap = item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon');
-    const itemPrice = (isSoap && isSoapOfferApplied) ? 5 : parseFloat(item.price.replace(',', '.').replace('$', ''));
-    message += `• ${item.title} x${item.quantity} - $${(itemPrice * item.quantity).toFixed(2)}\n`;
-  });
-  
-  message += `--------------------------\n`;
-  if (isSoapOfferApplied) {
-    message += `✅ ¡Oferta de jabones aplicada! ($5 c/u)\n`;
+    const soapItems = cartItems.filter(item => item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon'));
+    
+    let message = `¡Hola! 👋 Quiero realizar este pedido:\n`;
     message += `--------------------------\n`;
-  }
-  message += `💰 Total a pagar: $${total.toFixed(2)}\n\n`;
-  message += `Por favor, me indicas los datos para coordinar el pago y el envío. ✨`;
+    
+    cartItems.forEach(item => {
+      const isSoap = item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon');
+      const itemPrice = (isSoap && isSoapOfferApplied) ? 5 : parseFloat(item.price.replace(',', '.').replace('$', ''));
+      const toneSuffix = item.selectedTone ? ` [Tono: ${item.selectedTone}]` : '';
+      message += `• ${item.title}${toneSuffix} x${item.quantity} - $${(itemPrice * item.quantity).toFixed(2)}\n`;
+    });
+    
+    message += `--------------------------\n`;
+    if (isSoapOfferApplied) {
+      message += `✅ ¡Oferta de jabones aplicada! ($5 c/u)\n`;
+      message += `--------------------------\n`;
+    }
+    message += `💰 Total a pagar: $${total.toFixed(2)}\n`;
+    message += `👤 Cliente: [Tu Nombre]`;
 
-  const encodedMessage = encodeURIComponent(message);
-  
-  window.open(`https://wa.me/${whatsappPhone}?text=${encodedMessage}`, '_blank');
-  onConfirm();
-};
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/message/KAFOEFFC54FDM1?text=${encodedMessage}`, '_blank');
+    onConfirm();
+  };
 
   return (
     <AnimatePresence>
@@ -251,8 +234,8 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
               <div>
                 <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-primary mb-2">Comprobante de Pedido</h3>
                 <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-brand-secondary leading-none">
-                  Un Té <br />
-                  <span className="text-brand-primary">Con Daniela</span>
+                  Un Té con <br />
+                  <span className="text-brand-primary">Daniela</span>
                 </h2>
               </div>
               <button 
@@ -273,13 +256,19 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
                 {cartItems.map((item) => {
                   const isSoap = item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon');
                   const itemPrice = (isSoap && isSoapOfferApplied) ? 5 : parseFloat(item.price.replace(',', '.').replace('$', ''));
+                  const itemKey = item.title + (item.selectedTone ? `-${item.selectedTone}` : '');
                   
                   return (
-                    <div key={item.title} className="flex justify-between items-start">
+                    <div key={itemKey} className="flex justify-between items-start">
                       <div className="max-w-[70%]">
                         <p className="text-sm font-bold uppercase tracking-tight text-brand-secondary mb-1">
                           {item.title} <span className="text-brand-primary opacity-60">x{item.quantity}</span>
                         </p>
+                        {item.selectedTone && (
+                          <p className="text-[10px] text-brand-secondary/60 font-bold mb-1 uppercase tracking-wider">
+                            Tono: {item.selectedTone}
+                          </p>
+                        )}
                         {isSoap && isSoapOfferApplied && (
                           <span className="text-[9px] font-black bg-brand-primary/10 text-brand-primary px-2 py-0.5 rounded-full">Precio Especial</span>
                         )}
