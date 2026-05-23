@@ -6,7 +6,8 @@
 import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { ProductsPage } from "./pages/ProductsPage";
-import { CoursesPage } from "./pages/CoursesPage";
+// @ts-ignore
+import { CoursesPage } from './pages/CoursesPage';
 import { PhilosophyPage } from "./pages/PhilosophyPage";
 import { TermsPage } from "./pages/TermsPage";
 import MentorshipPage from "./pages/MentorshipPage";
@@ -16,6 +17,7 @@ import { CartProvider } from "./context/CartContext";
 import { CartDrawer } from "./components/CartDrawer";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import AdminPage from './pages/AdminPage';
 
 function ScrollToHash() {
   const { hash } = useLocation();
@@ -71,6 +73,7 @@ export default function App() {
         <Route path="/mentoria" element={<MentorshipPage />} />
         <Route path="/filosofia" element={<PhilosophyPage />} />
         <Route path="/terminos" element={<TermsPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
 
       <CartDrawer />
