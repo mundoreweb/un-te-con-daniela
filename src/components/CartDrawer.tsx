@@ -4,8 +4,8 @@ import { ShoppingBag, X, Plus, Minus, Trash2, Send, ChevronRight } from 'lucide-
 import { useCart } from '../context/CartContext';
 import { supabase } from '../lib/supabaseClient'; // <- Importamos tu nuevo cliente de Supabase
 
-const SALES_ENDPOINT = process.env.NEXT_PUBLIC_SALES_ENDPOINT || "https://dashboardunte.lovable.app/api/public/sales";
-const SALES_SECRET = process.env.NEXT_PUBLIC_SALES_WEBHOOK_SECRET;
+const SALES_ENDPOINT = import.meta.env.VITE_SALES_ENDPOINT || "https://dashboardunte.lovable.app/api/public/sales";
+const SALES_SECRET   = import.meta.env.VITE_SALES_WEBHOOK_SECRET;
 const WHATSAPP_PHONE = "584247326655";
 
 export function CartDrawer() {
