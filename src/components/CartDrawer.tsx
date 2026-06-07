@@ -283,7 +283,7 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
       message += `📞 *Teléfono:* ${phone.trim()}\n`;
       message += `🧾 *N° de Pedido:* #${shortId}\n`;
       message += `_(ID de control: ${saleId})_\n\n`;
-      message += `Quedo atenta para hacerte el Pago Móvil / Zelle. ¡Gracias!`;
+      message += `Quedo a la espera para coordinar los detalles. ¡Gracias!`;
       // 7. Codificar el mensaje generado y abrir la pestaña de WhatsApp
       const encodedMessage = encodeURIComponent(message);
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodedMessage}`, '_blank');
