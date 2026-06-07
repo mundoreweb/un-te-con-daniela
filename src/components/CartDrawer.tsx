@@ -280,6 +280,7 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
       // Añadimos los datos de control del dashboard al mensaje
       message += `💰 *Total a pagar: $${total.toFixed(2)}*\n\n`;
       message += `📍 *Ubicación:* ${state.trim()}\n`;
+      message += `📞 *Teléfono:* ${phone.trim()}\n`;
       message += `🧾 *N° de Pedido:* #${shortId}\n`;
       message += `_(ID de control: ${saleId})_\n\n`;
       message += `Quedo atenta para hacerte el Pago Móvil / Zelle. ¡Gracias!`;
