@@ -173,8 +173,7 @@ export function PhilosophyPage() {
               viewport={{ once: true }}
               className="order-1 lg:order-2 relative"
             >
-              // Pasamos de un cuadrado rígido (aspect-square) a un formato
-              retrato elegante (aspect-[4/5])
+              
               <div className="aspect-[4/5] rounded-[2rem] overflow-hidden border-2 border-brand-primary/10 shadow-2xl relative z-10 bg-white">
                 <img
                   src="/Portada.jpg"
