@@ -321,7 +321,7 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
           {/* Receipt Decor */}
           <div className="absolute top-0 left-0 right-0 h-2 bg-[radial-gradient(circle,white_1px,transparent_1px)] [background-size:10px_2px] opacity-20" />
           
-          <div className="p-10 md:p-14">
+          <div className="p-10 md:p-14 max-h-[calc(100vh-3rem)] overflow-y-auto custom-scrollbar pb-16">
             <div className="flex justify-between items-start mb-12">
               <div>
                 <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-primary mb-2">Comprobante de Pedido</h3>
