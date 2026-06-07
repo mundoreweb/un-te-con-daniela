@@ -4,17 +4,24 @@ import { ShoppingBag, X, Plus, Minus, Trash2, Send, ChevronRight } from 'lucide-
 import { useCart } from '../context/CartContext';
 import { supabase } from '../lib/supabaseClient'; // <- Importamos tu nuevo cliente de Supabase
 
+const SALES_ENDPOINT = process.env.NEXT_PUBLIC_SALES_ENDPOINT || "https://dashboardunte.lovable.app/api/public/sales";
+const SALES_SECRET = process.env.NEXT_PUBLIC_SALES_WEBHOOK_SECRET;
+const WHATSAPP_PHONE = "584247326655";
+
 export function CartDrawer() {
   const { cartItems, updateQuantity, removeFromCart, total, subtotal, isSoapOfferApplied, isCartOpen, setIsCartOpen } = useCart();
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  
+
   const handleCheckout = () => {
     setIsOrderModalOpen(true);
   };
 
   const onClose = () => setIsCartOpen(false);
+
 
   return (
     <>
@@ -180,34 +187,118 @@ export function CartDrawer() {
 
 function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: () => void, onConfirm: () => void }) {
   const { cartItems, total, isSoapOfferApplied } = useCart();
-  
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");  
+  const [state, setState] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   if (!isOpen) return null;
 
-  const handleWhatsAppConfirm = () => {
-    const soapItems = cartItems.filter(item => item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon'));
-    
-    let message = `¡Hola! 👋 Quiero realizar este pedido:\n`;
-    message += `--------------------------\n`;
-    
-    cartItems.forEach(item => {
-      const isSoap = item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon');
-      const itemPrice = (isSoap && isSoapOfferApplied) ? 5 : parseFloat(item.price.replace(',', '.').replace('$', ''));
-      const toneSuffix = item.selectedTone ? ` [Tono: ${item.selectedTone}]` : '';
-      message += `• ${item.title}${toneSuffix} x${item.quantity} - $${(itemPrice * item.quantity).toFixed(2)}\n`;
-    });
-    
-    message += `--------------------------\n`;
-    if (isSoapOfferApplied) {
-      message += `✅ ¡Oferta de jabones aplicada! ($5 c/u)\n`;
-      message += `--------------------------\n`;
-    }
-    message += `💰 Total a pagar: $${total.toFixed(2)}\n`;
-    message += `👤 Cliente: [Tu Nombre]`;
+  const handleWhatsAppConfirm = async () => {
+    setError(null);
 
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/message/KAFOEFFC54FDM1?text=${encodedMessage}`, '_blank');
-    onConfirm();
+    // 1. Validar que la clienta no deje campos en blanco
+    if (!name.trim() || !phone.trim() || !state.trim()) {
+      setError("Por favor completa tu nombre, teléfono y estado.");
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      setError("Tu carrito está vacío.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // 2. Mapear los productos calculando la oferta de los jabones y tonos
+      const formattedItems = cartItems.map((item) => {
+        const isSoap = item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon');
+        
+        // Si es jabón y la oferta está activa vale $5, si no, procesa su precio normal
+        const itemPrice = (isSoap && isSoapOfferApplied)
+          ? 5
+          : parseFloat(item.price.replace(',', '.').replace('$', '').trim());
+
+        return {
+          product_name: item.title,
+          quantity: item.quantity,
+          unit_price: itemPrice,
+          ...(item.selectedTone ? { tone: item.selectedTone } : {})
+        };
+      });
+
+    // 3. Conectarse de forma segura al endpoint del Dashboard
+      const response = await fetch(SALES_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-webhook-secret": SALES_SECRET || "",
+        },
+        body: JSON.stringify({
+          client: {
+            name: name.trim(),
+            phone: phone.trim(),
+            state: state.trim(),
+          },
+          items: formattedItems,
+        }),
+      });
+
+      // 4. Validar si el Dashboard aceptó el registro de la venta
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(errorBody.error || `Error del servidor (${response.status})`);
+      }
+
+      // 5. Extraer el ID de venta generado por Supabase
+      const data = await response.json() as { sale_id: string };
+      const saleId = data.sale_id;
+      const shortId = saleId.slice(0, 8).toUpperCase(); // Genera un código de factura corto (ej. A1B2C3D4)
+      // 6. Construir el cuerpo del mensaje de WhatsApp con tu formato original
+      let message = `¡Hola Daniela! 👋 Soy *${name.trim()}*.\n`;
+      message += `He dejado listo mi pedido en la web:\n`;
+      message += `--------------------------\n`;
+
+      cartItems.forEach(item => {
+        const isSoap = item.title.toLowerCase().includes('jabón') || item.title.toLowerCase().includes('jabon');
+        const itemPrice = (isSoap && isSoapOfferApplied) 
+          ? 5 
+          : parseFloat(item.price.replace(',', '.').replace('$', '').trim());
+        const toneSuffix = item.selectedTone ? ` [Tono: ${item.selectedTone}]` : '';
+        
+        message += `• ${item.title}${toneSuffix} x${item.quantity} - $${(itemPrice * item.quantity).toFixed(2)}\n`;
+      });
+
+      message += `--------------------------\n`;
+      if (isSoapOfferApplied) {
+        message += `✅ ¡Oferta de jabones aplicada! ($5 c/u)\n`;
+        message += `--------------------------\n`;
+      }
+      
+      // Añadimos los datos de control del dashboard al mensaje
+      message += `💰 *Total a pagar: $${total.toFixed(2)}*\n\n`;
+      message += `📍 *Ubicación:* ${state.trim()}\n`;
+      message += `🧾 *N° de Pedido:* #${shortId}\n`;
+      message += `_(ID de control: ${saleId})_\n\n`;
+      message += `Quedo atenta para hacerte el Pago Móvil / Zelle. ¡Gracias!`;
+      // 7. Codificar el mensaje generado y abrir la pestaña de WhatsApp
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodedMessage}`, '_blank');
+      
+      // 8. Confirmar la orden localmente en la web (limpiar el carrito y cerrar)
+      onConfirm();
+
+    } catch (e: any) {
+      // Captura fallos de internet o del servidor y los pinta en el modal
+      setError(e.message || "No pudimos registrar el pedido automáticamente. Intenta de nuevo.");
+    } finally {
+      // Apaga el estado de carga para liberar el botón
+      setLoading(false);
+    }
   };
+  
 
   return (
     <AnimatePresence>
@@ -292,15 +383,71 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
               )}
             </div>
 
+            <div className="space-y-4 mb-6 text-left w-full">
+              <div>
+                <label className="block text-[9px] font-black text-brand-secondary/60 mb-1 uppercase tracking-widest">
+                  Nombre Completo *
+                </label>
+                <input 
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Ej. María Pérez"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-primary bg-white text-brand-secondary"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-[9px] font-black text-brand-secondary/60 mb-1 uppercase tracking-widest">
+                  Teléfono (WhatsApp) *
+                </label>
+                <input 
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Ej. 04141234567"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-primary bg-white text-brand-secondary"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-[9px] font-black text-brand-secondary/60 mb-1 uppercase tracking-widest">
+                  Estado / Ciudad *
+                </label>
+                <input 
+                  type="text"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  placeholder="Ej. Mérida"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-primary bg-white text-brand-secondary"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Alerta de error si falta algún campo */}
+            {error && (
+              <p className="text-red-600 text-[10px] font-bold text-center my-3 bg-red-50 p-2.5 rounded-xl border border-red-100 uppercase tracking-wider">
+                {error}
+              </p>
+            )}
+
+            {/* --- TU BOTÓN ORIGINAL (Modificado con control de carga) --- */}
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: loading ? 1 : 1.02 }}
+              whileTap={{ scale: loading ? 1 : 0.98 }}
               onClick={handleWhatsAppConfirm}
-              className="w-full py-6 bg-brand-primary text-white rounded-full font-black text-xs uppercase tracking-[0.2em] shadow-2xl hover:bg-brand-secondary transition-all flex items-center justify-center gap-3"
+              disabled={loading}
+              className={`w-full py-6 text-white rounded-full font-black text-xs uppercase tracking-[0.2em] shadow-2xl transition-all flex items-center justify-center gap-3 ${
+                loading ? 'bg-gray-400 cursor-not-allowed shadow-none' : 'bg-brand-primary hover:bg-brand-secondary'
+              }`}
             >
-              Confirmar pedido por WhatsApp
-              <Send size={18} />
+              {loading ? "Registrando pedido..." : "Confirmar pedido por WhatsApp"}
+              {!loading && <Send size={18} />}
             </motion.button>
+            
             <p className="text-[9px] font-bold text-center text-brand-secondary/40 mt-6 uppercase tracking-widest leading-relaxed">
               Al confirmar, serás redirigido para <br /> coordinar el pago y envío.
             </p>
