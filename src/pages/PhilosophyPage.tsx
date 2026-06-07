@@ -134,7 +134,7 @@ export function PhilosophyPage() {
             >
               <div className="aspect-square rounded-full overflow-hidden border-8 border-white shadow-2xl relative z-10">
                 <img 
-                  src="/fondo03.jpg" 
+                  src="/Portada.jpg" 
                   alt="Proceso de formulación natural" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
