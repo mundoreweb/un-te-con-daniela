@@ -9,7 +9,7 @@ const SALES_SECRET   = import.meta.env.VITE_SALES_WEBHOOK_SECRET;
 const WHATSAPP_PHONE = "584247326655";
 
 export function CartDrawer() {
-  const { cartItems, updateQuantity, removeFromCart, total, subtotal, isSoapOfferApplied, isCartOpen, setIsCartOpen } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, total, subtotal, isSoapOfferApplied, isCartOpen, setIsCartOpen, clearCart } = useCart();
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -186,7 +186,7 @@ export function CartDrawer() {
 }
 
 function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: () => void, onConfirm: () => void }) {
-  const { cartItems, total, isSoapOfferApplied } = useCart();
+  const { cartItems, total, isSoapOfferApplied, clearCart } = useCart();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");  
   const [state, setState] = useState("");
@@ -229,7 +229,7 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
         };
       });
 
-    // 3. Conectarse de forma segura al endpoint del Dashboard
+      // 3. Conectarse de forma segura al endpoint del Dashboard
       const response = await fetch(SALES_ENDPOINT, {
         method: "POST",
         headers: {
@@ -256,6 +256,7 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
       const data = await response.json() as { sale_id: string };
       const saleId = data.sale_id;
       const shortId = saleId.slice(0, 8).toUpperCase(); // Genera un código de factura corto (ej. A1B2C3D4)
+      
       // 6. Construir el cuerpo del mensaje de WhatsApp con tu formato original
       let message = `¡Hola Daniela! 👋 Soy *${name.trim()}*.\n`;
       message += `He dejado listo mi pedido en la web:\n`;
@@ -284,12 +285,14 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
       message += `🧾 *N° de Pedido:* #${shortId}\n`;
       message += `_(ID de control: ${saleId})_\n\n`;
       message += `Quedo a la espera para coordinar los detalles. ¡Gracias!`;
+      
       // 7. Codificar el mensaje generado y abrir la pestaña de WhatsApp
       const encodedMessage = encodeURIComponent(message);
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodedMessage}`, '_blank');
       
       // 8. Confirmar la orden localmente en la web (limpiar el carrito y cerrar)
-      onConfirm();
+      clearCart(); // 👈 ¡LA LÍNEA MÁGICA! Borra el estado y el localStorage de inmediato
+      onConfirm(); // Cierra los modales/drawers de la interfaz
 
     } catch (e: any) {
       // Captura fallos de internet o del servidor y los pinta en el modal
@@ -298,7 +301,7 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
       // Apaga el estado de carga para liberar el botón
       setLoading(false);
     }
-  };
+};
   
 
   return (

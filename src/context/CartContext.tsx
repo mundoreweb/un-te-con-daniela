@@ -82,7 +82,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         ));
     };
 
-    const clearCart = () => setCartItems([]);
+    const clearCart = () => {
+    // 1. Borramos el almacenamiento físico al instante
+    localStorage.removeItem('untecondaniela_cart');
+    // 2. Vaciamos el estado de React
+    setCartItems([]);
+};
 
     // Logic for the SOAP RULE
     // "Jabón de Melocotón", "Jabón de Lavanda", "Jabón de Avena", "Jabón de Carbón Activado"
