@@ -4,7 +4,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2, Send, ChevronRight } from 'lucide-
 import { useCart } from '../context/CartContext';
 import { supabase } from '../lib/supabaseClient'; // <- Importamos tu nuevo cliente de Supabase
 
-const SALES_ENDPOINT = import.meta.env.VITE_SALES_ENDPOINT || "https://dashboardunte.lovable.app/api/public/sales";
+const SALES_ENDPOINT = import.meta.env.VITE_SALES_ENDPOINT || "https://dashboardunte-6a4225b1-b3q6.vercel.app/";
 const SALES_SECRET   = import.meta.env.VITE_SALES_WEBHOOK_SECRET;
 const WHATSAPP_PHONE = "584247326655";
 
@@ -228,8 +228,10 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
           ...(item.selectedTone ? { tone: item.selectedTone } : {})
         };
       });
-
+      
       // 3. Conectarse de forma segura al endpoint del Dashboard
+      console.log("Enviando a:", SALES_ENDPOINT);
+      console.log("Secret usada:", SALES_SECRET ? "SI TIENE VALOR" : "VACIA");
       const response = await fetch(SALES_ENDPOINT, {
         method: "POST",
         headers: {
@@ -247,17 +249,20 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
       });
 
       // 4. Validar si el Dashboard aceptó el registro de la venta
+
       if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
         throw new Error(errorBody.error || `Error del servidor (${response.status})`);
       }
 
-      // 5. Extraer el ID de venta generado por Supabase
+       // 5. Extraer el ID de venta generado por Supabase
+
       const data = await response.json() as { sale_id: string };
       const saleId = data.sale_id;
-      const shortId = saleId.slice(0, 8).toUpperCase(); // Genera un código de factura corto (ej. A1B2C3D4)
-      
+      const shortId = saleId.slice(0, 8).toUpperCase(); // Genera un código de factura corto    
+
       // 6. Construir el cuerpo del mensaje de WhatsApp con tu formato original
+
       let message = `¡Hola Daniela! 👋 Soy *${name.trim()}*.\n`;
       message += `He dejado listo mi pedido en la web:\n`;
       message += `--------------------------\n`;
