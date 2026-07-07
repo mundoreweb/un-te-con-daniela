@@ -4,7 +4,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2, Send, ChevronRight } from 'lucide-
 import { useCart } from '../context/CartContext';
 import { supabase } from '../lib/supabaseClient'; // <- Importamos tu nuevo cliente de Supabase
 
-const SALES_ENDPOINT = import.meta.env.VITE_SALES_ENDPOINT || "https://dashboardunte-6a4225b1-b3q6.vercel.app/api/public/sales.";
+const SALES_ENDPOINT = import.meta.env.VITE_SALES_ENDPOINT || "https://dashboardunte-6a4225b1-b3q6.vercel.app/api/public/sales";
 const SALES_SECRET   = import.meta.env.VITE_SALES_WEBHOOK_SECRET;
 const WHATSAPP_PHONE = "584247326655";
 
