@@ -232,6 +232,7 @@ function OrderModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: 
       // 3. Conectarse de forma segura al endpoint del Dashboard
       console.log("Enviando a:", SALES_ENDPOINT);
       console.log("Secret usada:", SALES_SECRET ? "SI TIENE VALOR" : "VACIA");
+      console.log("DEBUG URL:", SALES_ENDPOINT);
       const response = await fetch(SALES_ENDPOINT, {
         method: "POST",
         headers: {
