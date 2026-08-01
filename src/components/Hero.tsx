@@ -19,16 +19,20 @@ export function Hero() {
           >
             <div className="mb-4 flex items-center justify-center lg:justify-start">
               <span className="w-2 h-2 bg-brand-primary rounded-full mr-2"></span>
-              <span className="text-[10px] font-sans uppercase tracking-[0.4em] font-black text-brand-secondary/40">Bienestar Inteligente</span>
+              <span className="text-[10px] font-sans uppercase tracking-[0.4em] font-black text-brand-secondary/40">BIENESTAR Y BELLEZA INTEGRAL</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-black leading-tight mb-6 md:mb-8 text-brand-secondary uppercase tracking-tighter premium-heading">
-              La ciencia de lo <span className="text-brand-primary">natural</span>,<br />
-              el alma de tu piel.
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-sans font-black leading-tight mb-6 md:mb-8 text-brand-secondary uppercase tracking-tighter premium-heading">
+              Lo esencial para tu <span className="text-brand-primary"> belleza </span>,<br />
+              y cuidado personal.
             </h1>
 
             <p className="text-base md:text-lg font-sans font-light leading-relaxed mb-8 md:mb-10 text-brand-secondary max-w-lg mx-auto lg:mx-0">
-              Daniela te acompaña en un viaje de transformación consciente, fusionando la pureza de la tierra con la innovación cosmética más avanzada.
+              Enseñamos a mujeres comprometidas a elaborar y usar cosmética natural de forma sostenible, a través de talleres online, productos y asesorías.
+            </p>
+
+             <p className="text-base md:text-lg font-sans font-light leading-relaxed -mt-3 md:-mt-4 mb-5 md:mb-6  text-brand-secondary max-w-lg mx-auto lg:mx-0">
+              Ingredientes naturales - No testados en animales - Libres de gluten
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
@@ -47,7 +51,7 @@ export function Hero() {
                   whileTap={{ scale: 0.95 }}
                   className="w-full px-8 py-4 border border-brand-primary/20 text-brand-primary rounded-full font-sans text-xs uppercase font-bold tracking-widest hover:bg-brand-primary/5 transition-all"
                 >
-                  Catálogo
+                  Ver catálogo
                 </motion.button>
               </Link>
             </div>
@@ -105,11 +109,11 @@ export function Hero() {
               </div>
               <h4 className="text-lg mb-2 text-brand-secondary font-sans font-black leading-tight uppercase">Masterclass: Proyecta tu Marca Natural</h4>
               <p className="text-xs font-sans text-brand-secondary leading-relaxed">
-                Descubre cómo escalar tu emprendimiento de cosmética natural con formulación avanzada y branding consciente.
+                Valora y celebra cada pequeño paso que das hacia una vida más saludable y consciente. -Dan.
               </p>
               <div className="mt-4 tech-line opacity-20"></div>
               <div className="mt-4 text-[10px] font-sans uppercase font-black tracking-widest text-brand-primary/60">
-                Acceso exclusivo • 24 de Octubre
+                Acceso exclusivo • 
               </div>
             </motion.div>
           </motion.div>
