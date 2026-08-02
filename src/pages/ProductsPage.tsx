@@ -39,7 +39,11 @@ export function ProductsPage() {
         setLoading(true);
         
         const [productsResponse, alliesResponse] = await Promise.all([
-          supabase.from("products").select("*").order("id", { ascending: true }),
+          supabase
+            .from("products")
+            .select("*")
+            .eq("visible_on_web", true)
+            .order("id", { ascending: true }),
           supabase.from("allies").select("*").order("id", { ascending: true })
         ]);
 

@@ -53,7 +53,7 @@ const courses: Course[] = [
     desc: "Comprenderás qué es un jabón, cuáles son sus ingredientes principales, diversos métodos para elaborarlos en casa de forma segura y efectiva. Además, podrás evaluar las ventajas de elaborar tu propio jabón.",
     features: ["Datos históricos y definición del jabón", "Saponificación en frío y caliente", "Índices de saponificación", "Control de PH y curado"],
     popular: false,
-    image: "/Jabón-lavanda.jpg"
+    image: "/Jabón-lavanda 1.jpg"
   }
 ];
 
