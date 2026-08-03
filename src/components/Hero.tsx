@@ -31,10 +31,6 @@ export function Hero() {
               Enseñamos a mujeres comprometidas a elaborar y usar cosmética natural de forma sostenible, a través de talleres online, productos y asesorías.
             </p>
 
-             <p className="text-base md:text-lg font-sans font-light leading-relaxed -mt-3 md:-mt-4 mb-5 md:mb-6  text-brand-secondary max-w-lg mx-auto lg:mx-0">
-              Ingredientes naturales - No testados en animales - Libres de gluten
-            </p>
-
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
               <Link to="/cursos" className="w-full sm:w-auto">
                 <motion.button
@@ -118,13 +114,6 @@ export function Hero() {
             </motion.div>
           </motion.div>
         </div>
-      </div>
-      
-      {/* Footer/Sidebar micro-label */}
-      <div className="absolute bottom-8 left-12 hidden lg:block">
-        <p className="text-[10px] font-sans uppercase tracking-[0.5em] opacity-40">
-          Inspiración • Naturaleza • Tecnología
-        </p>
       </div>
     </section>
   );

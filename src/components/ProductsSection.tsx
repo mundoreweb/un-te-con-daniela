@@ -17,16 +17,16 @@ export function ProductsSection() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary/5 rounded-full text-brand-primary font-black text-[10px] uppercase tracking-[0.3em] mb-8"
             >
               <Sparkles size={14} />
-              Colección Consciente
+              Productos Naturales
             </motion.div>
             
             <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-brand-secondary mb-8 leading-none premium-heading">
-              Pureza en cada <br />
-              <span className="text-brand-primary">Formulación.</span>
+              Lo esencial para una<br />
+              <span className="text-brand-primary">rutina completa.</span>
             </h2>
             
             <p className="text-lg text-brand-secondary font-light mb-12 leading-relaxed max-w-lg">
-              Nuestros productos son el resultado de años de investigación botánica. Creamos soluciones honestas que respetan el equilibrio natural de tu piel y el planeta.
+              Cada producto es elaborado con materia prima local, ingredientes de origen natural, biocompatibles, libres de gluten.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-8 mb-12">
@@ -35,8 +35,8 @@ export function ProductsSection() {
                     <ShieldCheck size={20} />
                  </div>
                  <div>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-brand-secondary mb-1">Eficacia Real</h4>
-                    <p className="text-[10px] text-brand-secondary/60 uppercase font-bold tracking-tight">Ciencia aplicada.</p>
+                    <h4 className="text-xs font-black uppercase tracking-widest text-brand-secondary mb-1">Artesanal</h4>
+                    <p className="text-[10px] text-brand-secondary/60 uppercase font-bold tracking-tight">Hechos con amor.</p>
                  </div>
               </div>
               <div className="flex items-start gap-4">
@@ -44,8 +44,8 @@ export function ProductsSection() {
                     <Leaf size={20} />
                  </div>
                  <div>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-brand-secondary mb-1">100% Orgánico</h4>
-                    <p className="text-[10px] text-brand-secondary/60 uppercase font-bold tracking-tight">Sin sintéticos.</p>
+                    <h4 className="text-xs font-black uppercase tracking-widest text-brand-secondary mb-1">Saludables</h4>
+                    <p className="text-[10px] text-brand-secondary/60 uppercase font-bold tracking-tight">Cuidan tu piel.</p>
                  </div>
               </div>
             </div>

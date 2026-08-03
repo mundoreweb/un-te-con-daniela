@@ -38,6 +38,8 @@ export function About() {
             <p className="text-lg text-brand-secondary mb-10 leading-relaxed font-sans font-light">
               Un té con Daniela se gesta en una crisis de escasez de productos de todo tipo, incluyendo los cosméticos, nace de una búsqueda de soluciones
               simples y saludables para cubrir necesidades básicas, usando elementos de fácil acceso como aceites, mantecas y plantas.
+             </p>
+             <p className="text-lg text-brand-secondary mb-10 leading-relaxed font-sans font-light">
               Hoy en día es un espacio de bienestar y belleza integral que enseña a mujeres comprometidas a elaborar y usar cosmética natural de forma sostenible, a través de talleres online, productos y asesorías, de una manera amable, sencilla y respetuosa, con un tono calmado, amoroso y cercano, para que más personas puedan elegir lo esencial para su cuidado y belleza personal. 
              ¿Nos acompañas?
              </p>
