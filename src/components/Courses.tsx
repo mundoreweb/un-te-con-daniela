@@ -14,34 +14,34 @@ interface Course {
 const courses: Course[] = [
   {
     title: "Extractos Botánicos",
-    level: "Técnico",
-    duration: "4 Semanas",
-    price: "$149",
-    features: ["Extracción por maceración", "Destilación básica", "Conservación natural"],
+    level: "Básico - Teórico",
+    duration: "Práctico",
+    price: "67,00$",
+    features: ["Nociones básicas de botánica.", "Manipulación de las plantas", "Extracciones básicas.", "Elaboración de productos cosméticos usando extractos."],
     popular: true
   },
   {
-    title: "Maquillaje Natural & Slow",
-    level: "Avanzado",
-    duration: "6 Semanas",
-    price: "$299",
-    features: ["Pigmentos minerales", "Cuidado facial integrado", "Cremas con color (BB)"],
+    title: "Maquillaje Natural y Cuidado Facial Slow",
+    level: "Básico - Teórico",
+    duration: "Práctico",
+    price: "67,00$",
+    features: ["Datos históricos del maquillaje natural.", "Rutinas de cuidado facial slow", "Selección de las materias primas", "Elaboración de más de 15 productos"],
     popular: false
   },
   {
-    title: "Cuidado Capilar Consciente",
-    level: "Estratégico",
-    duration: "5 Semanas",
+    title: "Cuidado Capilar Saludable y Consciente",
+    level: "Avanzado",
+    duration: "Teórico / Práctico",
     price: "$199",
-    features: ["Shampoo sólido", "Acondicionado botánico", "Tratamientos cuero cabelludo"],
+    features: ["Características y necesidades del cabello.", "Selección de materias primas.", "Nociones básicas de formulación.","Formulación de diferentes productos capilares."],
     popular: false
   },
   {
     title: "Jabonería Natural",
-    level: "Taller",
-    duration: "3 Semanas",
+    level: "Avanzado",
+    duration: "Teórico / Práctico",
     price: "$120",
-    features: ["Saponificación en frío", "Diseños artísticos", "Aditivos botánicos"],
+    features: ["Datos históricos y definición del jabón.", "Ingredientes y utensilios necesarios para su elaboración.", "Método de saponificación en frío y caliente.","El pH y el curado del jabón"],
     popular: false
   }
 ];
@@ -60,12 +60,12 @@ export function Courses() {
             className="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-brand-primary font-black text-[10px] uppercase tracking-[0.3em] mb-6"
           >
             <Zap size={14} />
-             Formación Alquimia
+             Formaciones Alquímicas
           </motion.div>
           
           <h2 className="font-sans text-4xl md:text-5xl font-black tracking-tighter text-brand-forest mb-8 text-balance uppercase leading-tight premium-heading">
-            Especialidades de <br />
-            <span className="text-brand-primary">Maestría Botánica.</span>
+            Talleres de <br />
+            <span className="text-brand-primary">Cosmética Natral.</span>
           </h2>
           
           <p className="text-lg text-brand-secondary font-light max-w-2xl mx-auto">
@@ -86,7 +86,7 @@ export function Courses() {
               whileTap={{ scale: 0.95 }}
               className="px-10 py-5 bg-brand-primary text-white rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl shadow-brand-primary/20"
             >
-              Ver todos los programas
+              Ver todos los talleres
             </motion.button>
           </Link>
         </div>

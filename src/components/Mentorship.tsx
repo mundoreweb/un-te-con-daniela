@@ -25,29 +25,29 @@ export function Mentorship() {
               className="inline-flex items-center gap-2 px-5 py-2 bg-brand-wheat/30 text-brand-forest rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-10"
             >
               <Heart size={14} className="text-brand-primary" />
-               Acompañamiento Íntimo
+               Acompañamiento Especializado
             </motion.div>
 
             <h2 className="font-sans text-4xl md:text-6xl font-black tracking-tighter mb-10 text-brand-secondary leading-[0.95] uppercase premium-heading">
-              Cultiva tu esencia: <br />
-              <span className="text-brand-primary">Un camino consciente</span> <br />
-              <span className="italic text-brand-secondary/40 font-light lowercase">a tu propio ritmo.</span>
+              Crece tu negocio: <br />
+              <span className="text-brand-primary">De cosmética natural</span> <br />
             </h2>
 
             <p className="text-lg text-brand-secondary/80 mb-12 leading-relaxed font-sans font-light max-w-xl">
-              Cada paso cuenta en tu formación. No se trata de correr, sino de florecer con propósito. Mi mentoría 1:1 es un espacio seguro para profundizar en tu arte, pulir técnica y alinear tu proyecto con tu verdadera visión.
+              Si tienes un negocio de cosmética natural y quieres crecerlo, disfrutando el proceso y sin quemarte en el camino, puedes postularte a nuestro programa grupal “Grow it” en Simple y Tranqui o al plan de mentorías personalizadas, donde vemos el modelo de negocio, mentalidad, mensaje y objetivos, para así alinear tu negocio con su verdadero propósito y crecerlo con bases sólidas.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-x-12 gap-y-10 mb-12">
               <MentorFeature 
                 icon={<Sprout className="text-brand-primary" />} 
                 title="Crecimiento Orgánico" 
-                desc="Respetamos tus tiempos, adaptando cada sesión a tu nivel y necesidades reales." 
+                desc="Respetamos tus tiempos y los de tu negocio, nos adaptamos al momento en el que te encuentres y necesidades específicas, porque tu bienestar es fundamental.
+" 
               />
               <MentorFeature 
                 icon={<Compass className="text-brand-primary" />} 
                 title="Guía Estratégica" 
-                desc="Claridad técnica y mental para que tu marca personal respire coherencia." 
+                desc="Cada aspecto del programa está pensado para que puedas aplicarlo desde el primer momento y evaluar resultados con el acompañamiento oportuno." 
               />
             </div>
 
