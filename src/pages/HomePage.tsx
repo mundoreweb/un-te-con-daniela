@@ -47,29 +47,7 @@ export function HomePage() {
       <YouTubeSection />
       <Contact />
 
-      {/* Community / Final CTA */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto glass rounded-[4rem] p-12 md:p-24 text-center border-brand-primary/5 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-brand-primary/5 -z-10" />
-          <h2 className="font-sans text-4xl md:text-5xl font-black tracking-tighter text-brand-forest mb-8 leading-tight uppercase premium-heading">
-            ¿Lista para <br /> tu{" "}
-            <span className="text-brand-primary">transformación?</span>
-          </h2>
-          <p className="text-lg text-brand-secondary mb-12 max-w-xl mx-auto font-sans font-light">
-            Únete a más de 5,000 alumnas que ya están formulando su propio
-            bienestar. Cupos limitados para la próxima edición.
-          </p>
-          <Link to="/cursos">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-brand-primary text-white px-12 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl hover:shadow-brand-primary/30 transition-shadow transition-all"
-            >
-              Quiero mi lugar ahora
-            </motion.button>
-          </Link>
-        </div>
-      </section>
+      
     </main>
   );
 }
