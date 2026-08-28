@@ -1,119 +1,94 @@
+import React from 'react';
 import { motion } from "motion/react";
-import { Sparkles, ArrowRight, Play } from "lucide-react";
-import { Link } from "react-router-dom";
 
-export function Hero() {
+export function Hero({ onContact }: { onContact: () => void }) {
   return (
-    <section id="hero" className="relative min-h-[90vh] md:min-h-screen flex items-center pt-24 md:pt-16 overflow-hidden bg-glow">
-      {/* Background Tech Grid Overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" 
-           style={{ backgroundImage: 'radial-gradient(#9778d1 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }}>
-      </div>
+    <section id="top" className="relative flex min-h-screen items-center overflow-hidden px-6 lg:px-12 pt-36 pb-24 bg-[#120f18] text-white">
+      
+      {/* Fondo base oscuro y atmósfera general */}
+      <div className="absolute inset-0 z-0 bg-[#120f18]" />
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10 py-12 md:py-0">
-        <div className="grid lg:grid-cols-12 gap-8 md:gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+      {/* Contenedor principal con grid de 2 columnas */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        {/* COLUMNA IZQUIERDA: Textos limpios y estilizados (Estándar Hero1.png) */}
+        <div className="lg:col-span-6 space-y-6">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-5 text-center lg:text-left"
+            transition={{ duration: 0.6 }}
+            className="inline-block text-xs font-semibold tracking-[0.25em] uppercase px-4 py-1.5 rounded-full bg-[#8d6fa8]/20 text-[#d8b4fe] border border-[#8d6fa8]/30 font-mono"
           >
-            <div className="mb-4 flex items-center justify-center lg:justify-start">
-              <span className="w-2 h-2 bg-brand-primary rounded-full mr-2"></span>
-              <span className="text-[10px] font-sans uppercase tracking-[0.4em] font-black text-brand-secondary/40">BIENESTAR Y BELLEZA INTEGRAL</span>
-            </div>
-
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-sans font-black leading-tight mb-6 md:mb-8 text-brand-secondary uppercase tracking-tighter premium-heading">
-              Lo esencial para tu <span className="text-brand-primary"> belleza </span>,<br />
-              y cuidado personal.
-            </h1>
-
-            <p className="text-base md:text-lg font-sans font-light leading-relaxed mb-8 md:mb-10 text-brand-secondary max-w-lg mx-auto lg:mx-0">
-              Enseñamos a mujeres comprometidas a elaborar y usar cosmética natural de forma sostenible, a través de talleres online, productos y asesorías.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
-              <Link to="/cursos" className="w-full sm:w-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full px-8 py-4 bg-brand-primary text-white rounded-full font-sans text-xs uppercase font-bold tracking-widest hover:bg-brand-secondary hover:shadow-xl transition-all"
-                >
-                  Explorar Cursos
-                </motion.button>
-              </Link>
-              <Link to="/productos" className="w-full sm:w-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full px-8 py-4 border border-brand-primary/20 text-brand-primary rounded-full font-sans text-xs uppercase font-bold tracking-widest hover:bg-brand-primary/5 transition-all"
-                >
-                  Ver catálogo
-                </motion.button>
-              </Link>
-            </div>
-
-            {/* Small Authority Stats */}
-            <div className="mt-12 md:mt-16 flex justify-center lg:justify-start gap-8 md:gap-12 border-t border-black/10 pt-8">
-              <div>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-light">10k+</motion.div>
-                <div className="text-[10px] uppercase tracking-wider font-sans opacity-50">Alumnos</div>
-              </div>
-              <div>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-light">100%</motion.div>
-                <div className="text-[10px] uppercase tracking-wider font-sans opacity-50">Orgánico</div>
-              </div>
-              <div>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-light">BioTech</motion.div>
-                <div className="text-[10px] uppercase tracking-wider font-sans opacity-50">Fórmula Pro</div>
-              </div>
-            </div>
-          </motion.div>
+            Bienestar y Belleza Integral
+          </motion.span>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 36 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]"
+          >
+            Lo esencial para tu <span className="text-[#d8b4fe]">belleza</span> y cuidado personal.
+          </motion.h1>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.25 }}
+            className="text-lg text-gray-300 max-w-xl font-light leading-relaxed"
+          >
+            Enseñamos a mujeres comprometidas a elaborar y usar cosmética natural de forma sostenible, a través de talleres online, productos y asesorías.
+          </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            className="lg:col-span-7 relative h-full flex items-center justify-end"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-wrap items-center gap-4 pt-4"
           >
-            {/* Tech Decorative Elements */}
-            <div className="absolute top-1/4 -left-10 w-40 h-40 border border-dashed border-brand-primary/20 rounded-full" />
-            <div className="absolute bottom-1/4 right-0 w-64 h-64 border border-brand-primary/5 rounded-full" />
-            
-            <div className="relative z-10 w-4/5 aspect-[4/5] daniela-frame bg-gray-100 overflow-hidden shadow-2xl group">
-              <img 
-                src="/Principal.jpg" 
-                alt="Daniela Portrait" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/10 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center text-brand-primary/5 uppercase tracking-[2em] -rotate-90 font-sans text-4xl font-extrabold pointer-events-none">
-                Daniela
-              </div>
-            </div>
-
-            {/* Floating Content Card (Innovation Layer) */}
-            <motion.div 
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="glass absolute bottom-12 left-0 p-8 rounded-3xl w-72 shadow-xl z-20 border-brand-primary/10"
+            <button 
+              onClick={onContact}
+              className="bg-[#8d6fa8] hover:bg-[#7a5d93] text-white font-medium px-8 py-3.5 rounded-xl shadow-lg shadow-[#8d6fa8]/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-3 bg-brand-primary rounded-full animate-pulse"></div>
-                <span className="text-[10px] font-sans uppercase tracking-[0.2em] font-black text-brand-primary">Lleva tu emprendimiento al siguiente nivel</span>
-              </div>
-              <h4 className="text-lg mb-2 text-brand-secondary font-sans font-black leading-tight uppercase">Masterclass: Proyecta tu Marca Natural</h4>
-              <p className="text-xs font-sans text-brand-secondary leading-relaxed">
-                Valora y celebra cada pequeño paso que das hacia una vida más saludable y consciente. -Dan.
-              </p>
-              <div className="mt-4 tech-line opacity-20"></div>
-              <div className="mt-4 text-[10px] font-sans uppercase font-black tracking-widest text-brand-primary/60">
-                Acceso exclusivo • 
-              </div>
-            </motion.div>
+              Explorar Cursos
+            </button>
+            <a 
+              href="#catalogo" 
+              className="border border-white/20 hover:border-white/50 text-white font-medium px-8 py-3.5 rounded-xl transition-all backdrop-blur-sm"
+            >
+              Ver Catálogo
+            </a>
           </motion.div>
         </div>
+
+        {/* COLUMNA DERECHA: Video Cinemático del desodorante con Cloudinary */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="lg:col-span-6 relative flex justify-center items-center min-h-[450px]"
+        >
+          <div className="relative w-full max-w-lg aspect-square rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/20 backdrop-blur-md">
+            <video
+              className="absolute inset-0 size-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-hidden="true"
+            >
+              <source
+                src="https://res.cloudinary.com/xo2azlb3/video/upload/v1787927257/VideoUTD.mp4" 
+                type="video/mp4"
+              />
+            </video>
+            
+            {/* Viñeta sutil para integrar los bordes */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#120f18]/40 via-transparent to-transparent pointer-events-none" />
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
