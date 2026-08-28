@@ -6,7 +6,7 @@ export function Hero({ onContact }: { onContact: () => void }) {
     <section id="top" className="relative flex min-h-screen items-center overflow-hidden px-6 lg:px-12 pt-36 pb-24 bg-[#120f18] text-white">
       
       {/* Fondo base oscuro y atmósfera general */}
-      <div className="absolute inset-0 z-0 bg-[#120f18]" />
+      <div className="absolute inset-0 z-0 bg-[#26222e]" />
 
       {/* Contenedor principal con grid de 2 columnas */}
       <div className="relative z-10 mx-auto w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
