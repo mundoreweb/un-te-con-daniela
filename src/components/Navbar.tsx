@@ -46,16 +46,17 @@ export function Navbar() {
       >
         <div className={cn(
           "max-w-7xl mx-auto flex items-center justify-between transition-all duration-500",
-          scrolled ? "glass px-6 py-2 rounded-full shadow-lg" : "px-0"
+          scrolled ? "bg-black/30 backdrop-blur-md border border-white/15 px-6 py-2.5 rounded-full shadow-xl" : "px-0"
         )}>
           <Link to="/" className="flex items-center gap-2 z-50">
-            <span className="font-sans text-lg md:text-xl font-black uppercase tracking-widest text-brand-primary">
+            {/* 1. LOGO: Cambiado a texto blanco brillante para máximo contraste */}
+            <span className="font-sans text-lg md:text-xl font-black uppercase tracking-widest text-white hover:opacity-90 transition-opacity">
               Un Té con Daniela
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8 font-sans uppercase tracking-[0.2em] text-[10px] font-bold opacity-70">
+          {/* 2. MENÚ DESKTOP: Se eliminó la clase opacity-70 que opacaba los enlaces */}
+          <div className="hidden md:flex items-center gap-8 font-sans uppercase tracking-[0.2em] text-[11px] font-bold">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/filosofia">Filosofía</NavLink>
             <NavLink href="/productos">Productos</NavLink>
@@ -64,11 +65,12 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-4 z-50">
+            {/* 3. BOTÓN CARRITO: Icono en blanco con alta legibilidad */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-brand-secondary hover:text-brand-primary transition-colors flex items-center justify-center"
+              className="relative p-2 text-white/90 hover:text-white transition-colors flex items-center justify-center"
               aria-label="Open cart"
             >
               <ShoppingBag size={24} />
@@ -78,7 +80,7 @@ export function Navbar() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
-                    className="absolute -top-1 -right-1 bg-brand-primary text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white"
+                    className="absolute -top-1 -right-1 bg-purple-500 text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center ring-2 ring-black/40"
                   >
                     {cartItemCount}
                   </motion.span>
@@ -86,11 +88,12 @@ export function Navbar() {
               </AnimatePresence>
             </motion.button>
 
+            {/* 4. BOTÓN CONTACTO: Botón púrpura pastel visible sobre el gris */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleContactClick}
-              className="hidden md:block bg-brand-primary text-white px-6 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all hover:bg-brand-secondary hover:shadow-lg hover:shadow-brand-secondary/20"
+              className="hidden md:block bg-purple-400/90 hover:bg-purple-400 text-purple-950 px-6 py-2 rounded-full font-extrabold text-[10px] uppercase tracking-widest transition-all shadow-md hover:shadow-purple-400/30"
             >
               Contacto
             </motion.button>
@@ -98,7 +101,7 @@ export function Navbar() {
             {/* Mobile Toggle */}
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-brand-primary flex items-center justify-center"
+              className="md:hidden p-2 text-white flex items-center justify-center"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -115,7 +118,7 @@ export function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[40] bg-white md:hidden"
+            className="fixed inset-0 z-[40] bg-[#1a1721] text-white md:hidden"
           >
             <div className="flex flex-col h-full pt-32 pb-12 px-10">
               <div className="flex flex-col gap-8 flex-grow">
@@ -129,12 +132,12 @@ export function Navbar() {
               <div className="mt-auto">
                 <button
                   onClick={handleContactClick}
-                  className="w-full bg-brand-primary text-white py-6 rounded-2xl font-black text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-4"
+                  className="w-full bg-purple-400 text-purple-950 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-4 shadow-lg shadow-purple-400/20"
                 >
                   Hablar ahora
                   <ArrowRight size={18} />
                 </button>
-                <p className="text-center mt-12 text-[10px] uppercase tracking-[0.4em] font-black opacity-30 text-brand-secondary">
+                <p className="text-center mt-12 text-[10px] uppercase tracking-[0.4em] font-black opacity-40 text-purple-200">
                   Inspiración • Naturaleza • Tecnología
                 </p>
               </div>
@@ -146,21 +149,23 @@ export function Navbar() {
   );
 }
 
+{/* 5. COMPONENTE NavLink: Texto blanco con sub-línea brillante al hacer hover o estar activo */}
 function NavLink({ href, children }: { href: string; children: ReactNode }) {
   const location = useLocation();
+  const isActive = location.pathname === href;
   
   return (
     <Link
       to={href}
       className={cn(
-        "group flex items-center gap-2 text-brand-secondary/70 hover:text-brand-secondary transition-colors relative",
-        location.pathname === href && "text-brand-primary"
+        "group flex items-center gap-2 transition-colors relative",
+        isActive ? "text-white font-black" : "text-white/75 hover:text-white font-semibold"
       )}
     >
       {children}
       <span className={cn(
-        "absolute -bottom-1 left-0 h-px bg-brand-wheat transition-all duration-300",
-        location.pathname === href ? "w-full" : "w-0 group-hover:w-full"
+        "absolute -bottom-1 left-0 h-[2px] bg-white transition-all duration-300",
+        isActive ? "w-full" : "w-0 group-hover:w-full"
       )} />
     </Link>
   );
@@ -180,7 +185,7 @@ function MobileNavLink({ href, children, index }: { href: string; children: Reac
         to={href}
         className={cn(
           "text-4xl font-black uppercase tracking-tighter transition-colors",
-          isActive ? "text-brand-primary" : "text-brand-secondary/40"
+          isActive ? "text-purple-300" : "text-white/40 hover:text-white/80"
         )}
       >
         {children}
