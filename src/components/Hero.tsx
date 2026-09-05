@@ -8,12 +8,12 @@ export function Hero({ onContact }: { onContact: () => void }) {
       className="relative flex min-h-screen items-center overflow-hidden px-6 lg:px-12 pt-36 pb-24 bg-[#120f18] text-white"
     >
       
-      {/* Con opacidad al 90% por si quieres suavizarlo un poco más */}
+      {/* Fondo con opacidad para suavizar */}
       <div className="absolute inset-0 z-0 bg-[#7a7a7a]/90" />
 
       {/* Contenedor principal con grid de 2 columnas */}
       <div className="relative z-10 mx-auto w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* COLUMNA IZQUIERDA: Textos limpios y estilizados (Estándar Hero1.png) */}
+        {/* COLUMNA IZQUIERDA: Textos limpios y estilizados */}
         <div className="lg:col-span-6 space-y-6">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -66,28 +66,20 @@ export function Hero({ onContact }: { onContact: () => void }) {
           </motion.div>
         </div>
 
-        {/* COLUMNA DERECHA: Video Cinemático del desodorante con Cloudinary */}
+        {/* COLUMNA DERECHA: Fotografía real de la marca (Sobre-daniela.jpg) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
           className="lg:col-span-6 relative flex justify-center items-center min-h-[450px]"
         >
-          <div className="relative w-full max-w-lg aspect-square rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/20 backdrop-blur-md">
-            <video
-              className="absolute inset-0 size-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              aria-hidden="true"
-            >
-              <source
-                src="https://res.cloudinary.com/xo2azlb3/video/upload/v1787927257/VideoUTD.mp4"
-                type="video/mp4"
-              />
-            </video>
+          <div className="relative w-full max-w-lg aspect-square rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/25 backdrop-blur-md">
+            <img
+              src="/Sobre-daniela.jpg"
+              alt="Un Té con Daniela - Cosmética Natural"
+              // CAMBIO CLAVE AQUÍ: object-top en lugar de object-center
+              className="absolute inset-0 w-full h-full object-cover object-top"
+            />
 
             {/* Viñeta sutil para integrar los bordes */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#120f18]/40 via-transparent to-transparent pointer-events-none" />
