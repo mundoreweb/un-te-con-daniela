@@ -19,6 +19,10 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import AdminPage from './pages/AdminPage';
 
+// Importamos la pantalla de espera y la lógica
+import { ComingSoonScreen } from "./components/ComingSoonScreen";
+import { useComingSoonGate } from "./lib/store-status";
+
 function ScrollToHash() {
   const { hash } = useLocation();
 
@@ -43,6 +47,15 @@ export default function App() {
     damping: 30,
     restDelta: 0.001
   });
+
+  // Verificamos si debe mostrarse la pantalla de rebranding
+  const isComingSoon = useComingSoonGate();
+
+  // Si está activo (true en el archivo .env o en Vercel), 
+  // se muestra la pantalla de espera bloqueando toda la navegación de la tienda.
+  if (isComingSoon) {
+    return <ComingSoonScreen />;
+  }
 
   return (
     <CartProvider>
